@@ -4,22 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SingleResponsibilityPrinciple.badCode
+namespace SingleResponsibilityPrinciple.goodCode
 {
-    public class SRPBadCode
+    public class SRPGoodCode
     {
-        public static void GetBadCode ()
+        public static void GetGoodCode()
         {
-            //Type is first "unknown", then we´ll figure out what it is. 
-            //Vehicle "unknown" has here x meters lenght, y axles and before it gets calculated 0 mount
+            var vehicles = GetVehicles();
+            DetermineTypes(vehicles);
+            DetermineMount(vehicles); 
+            PrintVehiclesAndMout(vehicles);
+        }
+
+        private static void PrintVehiclesAndMout(Vehicle[] vehicles)
+        {
+            foreach (var vehicle in vehicles)
+            {
+                string vehicleInfo =
+                    $"type: {vehicle.type}\n" +
+                    $"mout: {vehicle.moutPerKilometer} € \n\n"; 
+
+                Console.WriteLine(vehicleInfo);
+            }
+        }
+        private static Vehicle[] GetVehicles()
+        {
             Vehicle firstVehicle = new Vehicle("unknown", 4, 2, 0.00);
             Vehicle secondVehicle = new Vehicle("unknown", 2, 1, 0.00);
             Vehicle thirdVehicle = new Vehicle("unknown", 12, 8, 0.00);
             Vehicle fourthVehicle = new Vehicle("unknown", 18, 12, 0.00);
-
-            //now we need to find a way to categorize the types from "unkown" to motorcycle, car or Truck
             Vehicle[] vehicles = { firstVehicle, secondVehicle, thirdVehicle, fourthVehicle };
+            return vehicles;
+        }
 
+        private static void DetermineTypes(Vehicle[] vehicles)
+        {
             foreach (var vehicle in vehicles)
             {
                 if (vehicle.size < 4 && vehicle.axles == 2)
@@ -40,6 +59,10 @@ namespace SingleResponsibilityPrinciple.badCode
                 }
             }
 
+        }
+
+        private static void DetermineMount(Vehicle[] vehicles)
+        {
             foreach (var vehicle in vehicles)
             {
                 if (vehicle.type == "Motorcycle")
@@ -68,4 +91,5 @@ namespace SingleResponsibilityPrinciple.badCode
             }
         }
     }
+
 }
